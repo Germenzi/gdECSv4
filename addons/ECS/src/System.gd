@@ -6,7 +6,6 @@ class_name System
 var active = true
 
 
-var entities : Array = []
 var entity_filter : EntityFilter
 
 
