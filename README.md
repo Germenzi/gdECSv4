@@ -1,2 +1,3 @@
-# gdECSv4
-Simple ECS addon for godot 4.x
+# Godot 4 ECS addon
+
+Usable as submodule (has no project.gd) inside
