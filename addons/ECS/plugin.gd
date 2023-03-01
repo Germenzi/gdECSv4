@@ -1,19 +1,16 @@
 @tool
 extends EditorPlugin
 
-# const ECS_SIGNLETON_PATH = "res://addons/ecs/src/ECS.gd"
-# const ECS_SINGLETON_NAME = "ECS"
+const ECS_SIGNLETON_PATH = "res://addons/ECS/src/ECS.gd"
+const ECS_SINGLETON_NAME = "ECS"
 
 func _enter_tree():
-	pass
-	# add_autoload_singleton(ECS_SINGLETON_NAME, ECS_SIGNLETON_PATH)
+	add_autoload_singleton(ECS_SINGLETON_NAME, ECS_SIGNLETON_PATH)
 
 
 func _exit_tree():
-	pass
-	# remove_autoload_singleton(ECS_SINGLETON_NAME)
+	remove_autoload_singleton(ECS_SINGLETON_NAME)
 
 
 func get_plugin_icon():
-	pass
-	# return preload("res://addons/ecs/ecs-icon.png")
+	return preload("res://addons/ECS/ecs-icon.png")
