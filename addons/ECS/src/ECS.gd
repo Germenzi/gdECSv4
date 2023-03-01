@@ -83,13 +83,13 @@ func is_instance_component(instance:Object):
 
 func is_component_readonly(instance:Object):
 	if not is_instance_component(instance):
-		return false # warning
+		return false
 	
 	return instance.has_meta(COMPONENT_READONLY_META_NAME)
 
 
 func set_component_readonly(instance:Object):
 	if not is_instance_component(instance):
-		return false # warning
+		return false
 	
 	instance.set_meta(COMPONENT_READONLY_META_NAME, 0)

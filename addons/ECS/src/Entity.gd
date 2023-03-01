@@ -69,11 +69,11 @@ func get_component(comp_type:String):
 	return components[comp_type]
 
 
-func get_all_components_names():
+func get_components_names():
 	return components.keys()
 
 
-func get_all_components():
+func get_components_instances():
 	return components.values()
 
 
