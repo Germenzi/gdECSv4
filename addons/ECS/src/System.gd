@@ -3,10 +3,21 @@ extends Node
 class_name System
 
 @export
-var active = true
+var active : bool = true
+
+@export
+var autoregister : bool = true
 
 
+var registered : bool = false
 var entity_filter : EntityFilter
+var in_descrete_mode : bool = false
+
+var _push_allowed : bool = false
+
+
+func push_process_entity(): # only for using in descrete mode
+	_push_allowed = true
 
 
 func _enter_tree():
@@ -25,6 +36,14 @@ func _exit_tree():
 
 
 func _process(delta:float):
+	if in_descrete_mode and not _push_allowed:
+		return
+	
+	_process_entities(delta)
+	_push_allowed = false
+
+
+func _process_entities(delta:float):
 	if not active:
 		return
 	

@@ -5,7 +5,8 @@ const COMPONENT_READONLY_META_NAME = "READONLY_COMPONENT"
 
 var entities : Array[Entity] = []
 var filters : Array[EntityFilter] = []
-
+var registered_systems : Array[System] = []
+var _ptr : int
 
 func register_filter(filter:EntityFilter):
 	if filter.registered:
@@ -75,6 +76,30 @@ func revise_entity(entity:Entity):
 		elif entity in filter.valid_entities:
 				filter.remove_entity(entity)
 			
+
+
+func register_system(system:System):
+	if system.registered:
+		return
+	
+	registered_systems.append(system)
+	system.registered = true
+
+
+func set_descrete_mode(flag:bool):
+	for i in registered_systems:
+		i.in_descrete_mode = flag
+	
+	_ptr = 0
+
+
+func push_update(): # only for using in descrete mode
+	if registered_systems.size() == 0:
+		return
+	
+	registered_systems[_ptr].push_process_entity()
+	_ptr = (_ptr + 1)%registered_systems.size()
+
 
 
 func is_instance_component(instance:Object):
