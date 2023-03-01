@@ -8,18 +8,19 @@ script/source = "extends Node2D
 var e : Entity
 
 class ABC123:
-	extends Object
+	extends RefCounted
 	
 	const COMPONENT_TYPE = \"ABC123\"
 
 
 func _ready():
 	e = Entity.new()
-	
+	e.add_component(ABC123.new())
+
 
 func _process(delta):
 	if Input.is_action_just_pressed(\"ui_select\"):
-		e.add_component(ABC123.new())
+		e.remove_component(\"ABC123\")
 "
 
 [sub_resource type="GDScript" id="GDScript_y1gwo"]

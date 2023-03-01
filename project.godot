@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 ECS="*res://addons/ECS/src/ECS.gd"
 
+[display]
+
+window/size/always_on_top=true
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

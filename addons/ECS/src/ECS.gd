@@ -71,9 +71,10 @@ func revise_entity(entity:Entity):
 		if EntitySignature.match_entity(filter.entity_signature, entity):
 			if not entity in filter.valid_entities:
 				filter.add_entity(entity)
-		else:
-			if entity in filter.valid_entities:
+		
+		elif entity in filter.valid_entities:
 				filter.remove_entity(entity)
+			
 
 
 func is_instance_component(instance:Object):
