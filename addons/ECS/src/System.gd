@@ -14,8 +14,6 @@ var in_discrete_mode : bool = false
 func push_process():
 	if in_discrete_mode:
 		set_process(true)
-	else:
-		push_warning(";iwefh")
 
 
 func enter_discrete_mode():
