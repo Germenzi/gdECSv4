@@ -9,15 +9,13 @@ signal exited_descrete_mode
 
 var entities : Array[Entity] = []
 var filters : Array[EntityFilter] = []
-var registered_systems : Array[System] = []
 var in_descrete_mode : bool = false
 
-var _ptr : int
+var _systems_queue : Array[System] = []
 
 
 func _enter_tree():
-	get_tree().node_removed.connect(_on_node_removed)
-
+	get_tree().node_added.connect(_on_node_added)
 
 func register_filter(filter:EntityFilter):
 	if filter.registered:
@@ -86,39 +84,46 @@ func revise_entity(entity:Entity):
 		
 		elif entity in filter.valid_entities:
 				filter.remove_entity(entity)
-			
-
-
-func register_system(system:System):
-	if system.registered:
-		return
-	
-	registered_systems.append(system)
-	system.registered = true
-
-
-func set_descrete_mode(flag:bool):
-	await get_tree().process_frame
-	
-	if flag:
-		entered_descrete_mode.emit()
-	else:
-		exited_descrete_mode.emit()
-	
-	for i in registered_systems:
-		i.in_descrete_mode = flag
-	
-	_ptr = 0
-	in_descrete_mode = flag
 
 
 func push_update():
-	if registered_systems.size() == 0:
+	if _systems_queue.is_empty():
+		push_warning("...")
 		return
 	
-	registered_systems[_ptr].push_process_entity()
-	_ptr = (_ptr + 1)%registered_systems.size()
+	var system : System = _systems_queue.pop_front()
+	
+	system.push_process()
+	
+	_systems_queue.append(system)
 
+
+func enter_descrete_mode():
+	if in_descrete_mode:
+		push_warning("......")
+		return
+	
+	_fill_system_queue(get_tree().root)
+	
+	for s in _systems_queue:
+		s.enter_descrete_mode()
+	
+	in_descrete_mode = true
+	
+	entered_descrete_mode.emit()
+
+
+func exit_descrete_mode():
+	if not in_descrete_mode:
+		push_warning("dkirr")
+		return
+	
+	for s in _systems_queue:
+		s.exit_descrete_mode()
+	
+	_systems_queue = []
+	in_descrete_mode = false
+	exited_descrete_mode.emit()
 
 
 func is_instance_component(instance:Object):
@@ -139,13 +144,14 @@ func set_component_readonly(instance:Object):
 	instance.set_meta(COMPONENT_READONLY_META_NAME, 0)
 
 
-func _on_node_removed(node:Node):
-	var idx : int = registered_systems.find(node)
+func _fill_system_queue(node:Node):
+	if node is System:
+		_systems_queue.append(node)
 	
-	if idx == -1:
-		return
-	
-	if _ptr >= idx:
-		_ptr -= 1
-	
-	registered_systems.remove_at(idx)
+	for i in node.get_children():
+		_fill_system_queue(i)
+
+
+func _on_node_added(node:Node):
+	if node is System and in_descrete_mode:
+		push_warning("eljgle")

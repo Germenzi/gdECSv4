@@ -5,19 +5,27 @@ class_name System
 @export
 var active : bool = true
 
-@export
-var autoregister : bool = true
-
 
 var registered : bool = false
 var entity_filter : EntityFilter
 var in_descrete_mode : bool = false
 
-var _push_allowed : bool = false
+
+func push_process():
+	if in_descrete_mode:
+		set_process(true)
+	else:
+		push_warning(";iwefh")
 
 
-func push_process_entity(): # only for using in descrete mode
-	_push_allowed = true
+func enter_descrete_mode():
+	set_process(false)
+	in_descrete_mode = true
+
+
+func exit_descrete_mode():
+	set_process(true)
+	in_descrete_mode = false
 
 
 func _enter_tree():
@@ -29,9 +37,7 @@ func _enter_tree():
 	)
 	
 	ECS.register_filter(entity_filter)
-	
-	if autoregister:
-		ECS.register_system(self)
+
 
 
 func _exit_tree():
@@ -39,11 +45,10 @@ func _exit_tree():
 
 
 func _process(delta:float):
-	if in_descrete_mode and not _push_allowed:
-		return
-	
 	_process_entities(delta)
-	_push_allowed = false
+	
+	if in_descrete_mode:
+		set_process(false)
 
 
 func _process_entities(delta:float):
