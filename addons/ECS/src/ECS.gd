@@ -3,10 +3,21 @@ extends Node
 const COMPONENT_TYPE_PROPERTY = "COMPONENT_TYPE"
 const COMPONENT_READONLY_META_NAME = "READONLY_COMPONENT"
 
+signal entered_descrete_mode
+signal exited_descrete_mode
+
+
 var entities : Array[Entity] = []
 var filters : Array[EntityFilter] = []
 var registered_systems : Array[System] = []
+var in_descrete_mode : bool = false
+
 var _ptr : int
+
+
+func _enter_tree():
+	get_tree().node_removed.connect(_on_node_removed)
+
 
 func register_filter(filter:EntityFilter):
 	if filter.registered:
@@ -87,13 +98,21 @@ func register_system(system:System):
 
 
 func set_descrete_mode(flag:bool):
+	await get_tree().process_frame
+	
+	if flag:
+		entered_descrete_mode.emit()
+	else:
+		exited_descrete_mode.emit()
+	
 	for i in registered_systems:
 		i.in_descrete_mode = flag
 	
 	_ptr = 0
+	in_descrete_mode = flag
 
 
-func push_update(): # only for using in descrete mode
+func push_update():
 	if registered_systems.size() == 0:
 		return
 	
@@ -118,3 +137,15 @@ func set_component_readonly(instance:Object):
 		return false
 	
 	instance.set_meta(COMPONENT_READONLY_META_NAME, 0)
+
+
+func _on_node_removed(node:Node):
+	var idx : int = registered_systems.find(node)
+	
+	if idx == -1:
+		return
+	
+	if _ptr >= idx:
+		_ptr -= 1
+	
+	registered_systems.remove_at(idx)

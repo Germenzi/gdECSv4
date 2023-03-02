@@ -16,11 +16,18 @@ class ABC123:
 func _ready():
 	e = Entity.new()
 	e.add_component(ABC123.new())
+	
+	ECS.entered_descrete_mode.connect(func(): print(\"Entered descrete mode\"))
+	ECS.exited_descrete_mode.connect(func(): print(\"Exited descrete mode\"))
 
 
 func _process(delta):
 	if Input.is_action_just_pressed(\"ui_select\"):
-		e.remove_component(\"ABC123\")
+		
+		ECS.set_descrete_mode(not ECS.in_descrete_mode)
+	
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		ECS.push_update()
 "
 
 [sub_resource type="GDScript" id="GDScript_y1gwo"]

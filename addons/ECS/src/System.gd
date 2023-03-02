@@ -29,6 +29,9 @@ func _enter_tree():
 	)
 	
 	ECS.register_filter(entity_filter)
+	
+	if autoregister:
+		ECS.register_system(self)
 
 
 func _exit_tree():
