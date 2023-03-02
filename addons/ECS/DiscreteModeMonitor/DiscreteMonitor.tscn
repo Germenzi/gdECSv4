@@ -25,24 +25,38 @@ func update_text():
 		text += ECS._systems_queue[1].name + \"\\n...\"
 "
 
-[node name="DiscreteMonitor" type="CanvasLayer"]
-layer = 10
+[node name="DiscreteMonitor" type="Window"]
+title = "Discrete monitor"
+position = Vector2i(20, 20)
+size = Vector2i(300, 150)
 visible = false
+min_size = Vector2i(300, 150)
 script = ExtResource("1_0jpte")
 
 [node name="Base" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Base"]
 layout_mode = 1
-offset_right = 150.0
-offset_bottom = 150.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -122.5
+offset_top = -75.0
+offset_right = 122.5
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -85,5 +99,6 @@ focus_mode = 0
 text = "Exit Dicscrete mode"
 flat = true
 
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/ExitDiscreteMode" to="." method="_on_exit_discrete_mode_pressed"]

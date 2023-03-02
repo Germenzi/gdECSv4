@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Window
 
 @onready 
 var systems_list = $Base/MarginContainer/VBoxContainer/SystemsList
@@ -12,12 +12,12 @@ func _ready():
 
 
 func _on_enter_dicrete_mode():
-	visible = true
+	show()
 	systems_list.update_text()
 
 
 func _on_exit_discrete_mode():
-	visible = false
+	hide()
 
 
 func _on_next_pressed():
@@ -32,4 +32,5 @@ func _on_process_pushed():
 	systems_list.update_text()
 
 
-
+func _on_close_requested():
+	ECS.exit_discrete_mode()
