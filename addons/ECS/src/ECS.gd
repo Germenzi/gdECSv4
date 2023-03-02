@@ -3,13 +3,13 @@ extends Node
 const COMPONENT_TYPE_PROPERTY = "COMPONENT_TYPE"
 const COMPONENT_READONLY_META_NAME = "READONLY_COMPONENT"
 
-signal entered_descrete_mode
-signal exited_descrete_mode
+signal entered_discrete_mode
+signal exited_discrete_mode
 
 
 var entities : Array[Entity] = []
 var filters : Array[EntityFilter] = []
-var in_descrete_mode : bool = false
+var in_discrete_mode : bool = false
 
 var _systems_queue : Array[System] = []
 
@@ -98,32 +98,32 @@ func push_update():
 	_systems_queue.append(system)
 
 
-func enter_descrete_mode():
-	if in_descrete_mode:
+func enter_discrete_mode():
+	if in_discrete_mode:
 		push_warning("......")
 		return
 	
 	_fill_system_queue(get_tree().root)
 	
 	for s in _systems_queue:
-		s.enter_descrete_mode()
+		s.enter_discrete_mode()
 	
-	in_descrete_mode = true
+	in_discrete_mode = true
 	
-	entered_descrete_mode.emit()
+	entered_discrete_mode.emit()
 
 
-func exit_descrete_mode():
-	if not in_descrete_mode:
+func exit_discrete_mode():
+	if not in_discrete_mode:
 		push_warning("dkirr")
 		return
 	
 	for s in _systems_queue:
-		s.exit_descrete_mode()
+		s.exit_discrete_mode()
 	
 	_systems_queue = []
-	in_descrete_mode = false
-	exited_descrete_mode.emit()
+	in_discrete_mode = false
+	exited_discrete_mode.emit()
 
 
 func is_instance_component(instance:Object):
@@ -153,5 +153,5 @@ func _fill_system_queue(node:Node):
 
 
 func _on_node_added(node:Node):
-	if node is System and in_descrete_mode:
+	if node is System and in_discrete_mode:
 		push_warning("eljgle")

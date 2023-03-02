@@ -8,24 +8,24 @@ var active : bool = true
 
 var registered : bool = false
 var entity_filter : EntityFilter
-var in_descrete_mode : bool = false
+var in_discrete_mode : bool = false
 
 
 func push_process():
-	if in_descrete_mode:
+	if in_discrete_mode:
 		set_process(true)
 	else:
 		push_warning(";iwefh")
 
 
-func enter_descrete_mode():
+func enter_discrete_mode():
 	set_process(false)
-	in_descrete_mode = true
+	in_discrete_mode = true
 
 
-func exit_descrete_mode():
+func exit_discrete_mode():
 	set_process(true)
-	in_descrete_mode = false
+	in_discrete_mode = false
 
 
 func _enter_tree():
@@ -47,7 +47,7 @@ func _exit_tree():
 func _process(delta:float):
 	_process_entities(delta)
 	
-	if in_descrete_mode:
+	if in_discrete_mode:
 		set_process(false)
 
 
