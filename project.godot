@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+DiscreteMonitor="*res://addons/ECS/DiscreteModeMonitor/DiscreteMonitor.tscn"
 ECS="*res://addons/ECS/src/ECS.gd"
 
 [display]

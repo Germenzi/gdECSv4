@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2cge2sjhd8m"]
+
+[ext_resource type="Script" path="res://addons/ECS/DiscreteModeMonitor/DiscreteMonitor.gd" id="1_0jpte"]
+
+[sub_resource type="GDScript" id="GDScript_1yu8a"]
+resource_name = "SystemsDisplay"
+script/source = "extends RichTextLabel
+
+
+func update_text():
+	var systems : int = ECS._systems_queue.size()
+	
+	text = \"\"
+	
+	if systems == 0:
+		text += \"<No systems>\"
+	elif systems == 1:
+		text += ECS._systems_queue[0].name
+	elif systems == 2:
+		text += ECS._systems_queue[1].name + \"\\n\"
+		text += ECS._systems_queue[0].name + \" <-- \\n\"
+	else:
+		text += ECS._systems_queue[-1].name + \"\\n\"
+		text += ECS._systems_queue[0].name + \" <--\\n\"
+		text += ECS._systems_queue[1].name + \"\\n...\"
+"
+
+[node name="DiscreteMonitor" type="CanvasLayer"]
+layer = 10
+visible = false
+script = ExtResource("1_0jpte")
+
+[node name="Base" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Base"]
+layout_mode = 1
+offset_right = 150.0
+offset_bottom = 150.0
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Base/MarginContainer"]
+layout_mode = 2
+
+[node name="SystemsList" type="RichTextLabel" parent="Base/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+fit_content = true
+autowrap_mode = 0
+script = SubResource("GDScript_1yu8a")
+
+[node name="Panel" type="Panel" parent="Base/MarginContainer/VBoxContainer/SystemsList"]
+modulate = Color(1, 1, 1, 0.419608)
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Base/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Next" type="Button" parent="Base/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 30)
+layout_mode = 2
+focus_mode = 0
+text = "Next"
+flat = true
+
+[node name="ExitDiscreteMode" type="Button" parent="Base/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 30)
+layout_mode = 2
+focus_mode = 0
+text = "Exit Dicscrete mode"
+flat = true
+
+[connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/ExitDiscreteMode" to="." method="_on_exit_discrete_mode_pressed"]

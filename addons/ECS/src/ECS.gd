@@ -5,6 +5,7 @@ const COMPONENT_READONLY_META_NAME = "READONLY_COMPONENT"
 
 signal entered_discrete_mode
 signal exited_discrete_mode
+signal process_pushed
 
 
 var entities : Array[Entity] = []
@@ -97,6 +98,8 @@ func push_update():
 	system.push_process()
 	
 	_systems_queue.append(system)
+	
+	process_pushed.emit()
 
 
 func enter_discrete_mode():
@@ -122,6 +125,7 @@ func exit_discrete_mode():
 	
 	_systems_queue = []
 	in_discrete_mode = false
+	
 	exited_discrete_mode.emit()
 
 
