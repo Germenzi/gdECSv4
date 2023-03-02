@@ -26,14 +26,14 @@ func _init(components:Array=[], autoregister:bool=true):
 
 func add_component(comp_instance:Object, readonly:bool=false, overwrite:bool=false):
 	if not ECS.is_instance_component(comp_instance):
-		push_error("Trying to add non-component instance as a component to the entity")
+		push_warning("Trying to add non-component instance as a component to the entity")
 		return
 	
 	var existing : Object = get_component(comp_instance.COMPONENT_TYPE)
 	
 	if overwrite or existing == null:
 		if existing != null and ECS.is_component_readonly(existing):
-			push_error("Cannot overwrite readonly component <{0}> in entity {1}".format([comp_instance.COMPONENT_TYPE, self]))
+			push_warning("Cannot overwrite readonly component <{0}> in entity {1}".format([comp_instance.COMPONENT_TYPE, self]))
 			return
 		
 		components[comp_instance.COMPONENT_TYPE] = comp_instance
@@ -50,11 +50,11 @@ func has_component(comp_type:String):
 
 func remove_component(comp_type:String):
 	if not has_component(comp_type):
-		push_error("Entity <{0}> has no <{1}> component to remove".format([self, comp_type]))
+		push_warning("Entity <{0}> has no <{1}> component to remove".format([self, comp_type]))
 		return
 	
 	if ECS.is_component_readonly(components[comp_type]):
-		push_error("Cannot remove readonly component <{0}> from entity {1}".format([comp_type, self]))
+		push_warning("Cannot remove readonly component <{0}> from entity {1}".format([comp_type, self]))
 		return
 	
 	components.erase(comp_type)

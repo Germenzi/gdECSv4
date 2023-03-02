@@ -39,7 +39,6 @@ func _enter_tree():
 	ECS.register_filter(entity_filter)
 
 
-
 func _exit_tree():
 	ECS.unregister_filter(entity_filter)
 

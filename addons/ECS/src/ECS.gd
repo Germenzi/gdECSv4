@@ -17,6 +17,7 @@ var _systems_queue : Array[System] = []
 func _enter_tree():
 	get_tree().node_added.connect(_on_node_added)
 
+
 func register_filter(filter:EntityFilter):
 	if filter.registered:
 		return
@@ -88,7 +89,7 @@ func revise_entity(entity:Entity):
 
 func push_update():
 	if _systems_queue.is_empty():
-		push_warning("...")
+		push_warning("Has no systems to push update")
 		return
 	
 	var system : System = _systems_queue.pop_front()
@@ -100,7 +101,6 @@ func push_update():
 
 func enter_discrete_mode():
 	if in_discrete_mode:
-		push_warning("......")
 		return
 	
 	_fill_system_queue(get_tree().root)
@@ -115,7 +115,6 @@ func enter_discrete_mode():
 
 func exit_discrete_mode():
 	if not in_discrete_mode:
-		push_warning("dkirr")
 		return
 	
 	for s in _systems_queue:
@@ -154,4 +153,4 @@ func _fill_system_queue(node:Node):
 
 func _on_node_added(node:Node):
 	if node is System and in_discrete_mode:
-		push_warning("eljgle")
+		push_warning("Adding new System while discrete mode active")
