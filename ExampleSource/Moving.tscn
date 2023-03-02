@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx5knpdm8p63i"]
+
+[ext_resource type="Texture2D" uid="uid://cximxfjhkyg5e" path="res://icon.svg" id="1_6ytak"]
+
+[sub_resource type="GDScript" id="GDScript_q5fmk"]
+script/source = "extends Node2D
+
+
+const COMPONENT_TYPE = C_SynchroPos.COMPONENT_TYPE
+
+
+func _ready():
+	var e : Entity = Entity.new([
+		C_LinearMovement.new(100*(randf()+0.2), Vector2(randf(), randf())),
+		C_Object2D.new(),
+		self
+	])
+	
+	e.bind_node(self)
+"
+
+[node name="moving" type="Node2D"]
+script = SubResource("GDScript_q5fmk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_6ytak")

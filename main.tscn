@@ -1,24 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://cxuo4ujgu0e8w"]
 
+[ext_resource type="PackedScene" uid="uid://dwt2tn5tvr2tr" path="res://ExampleSource/Example.tscn" id="1_wtd67"]
+
 [sub_resource type="GDScript" id="GDScript_1hqel"]
 resource_name = "main"
 script/source = "extends Node2D
 
 
-var e : Entity
-
-class ABC123:
-	extends RefCounted
-	
-	const COMPONENT_TYPE = \"ABC123\"
-
-
 func _ready():
-	e = Entity.new()
-	e.add_component(ABC123.new())
-	
-	ECS.entered_discrete_mode.connect(func(): print(\"Entered descrete mode\"))
-	ECS.exited_discrete_mode.connect(func(): print(\"Exited descrete mode\"))
+	pass
 
 
 func _process(delta):
@@ -33,35 +23,7 @@ func _process(delta):
 		ECS.push_update()
 "
 
-[sub_resource type="GDScript" id="GDScript_y1gwo"]
-resource_name = "TestSystem"
-script/source = "extends System
-
-
-func get_necessary_components():
-	return [
-		\"ABC123\"
-	]
-
-
-func on_entity_process(entity:Entity, delta:float):
-	print(name)
-"
-
 [node name="main" type="Node2D"]
 script = SubResource("GDScript_1hqel")
 
-[node name="TestSystem" type="Node" parent="."]
-script = SubResource("GDScript_y1gwo")
-
-[node name="TestSystem2" type="Node" parent="TestSystem"]
-script = SubResource("GDScript_y1gwo")
-
-[node name="TestSystem3" type="Node" parent="TestSystem/TestSystem2"]
-script = SubResource("GDScript_y1gwo")
-
-[node name="TestSystem4" type="Node" parent="TestSystem/TestSystem2"]
-script = SubResource("GDScript_y1gwo")
-
-[node name="TestSystem5" type="Node" parent="."]
-script = SubResource("GDScript_y1gwo")
+[node name="main" parent="." instance=ExtResource("1_wtd67")]

@@ -1,0 +1,59 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwt2tn5tvr2tr"]
+
+[sub_resource type="GDScript" id="GDScript_q4xnb"]
+script/source = "extends Node2D
+
+const MOVING_SCENE = preload(\"res://ExampleSource/Moving.tscn\")
+
+func _ready():
+	for i in range(100):
+		var m = MOVING_SCENE.instantiate()
+		
+		add_child(m)
+"
+
+[sub_resource type="GDScript" id="GDScript_njyqm"]
+script/source = "extends System
+
+
+func on_entity_process(entity:Entity, delta:float):
+	var c_object2d : C_Object2D = entity.get_component(C_Object2D.COMPONENT_TYPE)
+	var c_linear_movement : C_LinearMovement = \\
+			entity.get_component(C_LinearMovement.COMPONENT_TYPE)
+	
+	c_object2d.position += c_linear_movement.direction*c_linear_movement.speed*delta
+
+
+func get_necessary_components() -> Array:
+	return [
+		C_Object2D.COMPONENT_TYPE,
+		C_LinearMovement.COMPONENT_TYPE
+	]
+"
+
+[sub_resource type="GDScript" id="GDScript_7ou8e"]
+script/source = "extends System
+
+
+func on_entity_process(entity:Entity, delta:float):
+	var c_object2d : C_Object2D = entity.get_component(C_Object2D.COMPONENT_TYPE)
+	var c_synhro : Node2D = entity.get_component(C_SynchroPos.COMPONENT_TYPE)
+	
+	c_synhro.global_position = c_object2d.position
+
+
+func get_necessary_components() -> Array:
+	return [
+		C_Object2D.COMPONENT_TYPE,
+		C_SynchroPos.COMPONENT_TYPE
+	]
+"
+
+[node name="main" type="Node2D"]
+script = SubResource("GDScript_q4xnb")
+
+[node name="LinearMoveSystem" type="Node" parent="."]
+script = SubResource("GDScript_njyqm")
+
+[node name="SynchroSystem" type="Node" parent="."]
+script = SubResource("GDScript_7ou8e")
