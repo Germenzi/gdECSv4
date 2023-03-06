@@ -11,7 +11,7 @@ var _binded_scene : Node
 var inside_ecs:bool = false # only for use from ECS singleton!
 
 
-static func is_dirty(entity):
+static func is_dirty(entity:Entity):
 	return entity == null or \
 			not is_instance_valid(entity)
 

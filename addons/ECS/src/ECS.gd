@@ -13,6 +13,7 @@ var filters : Array[EntityFilter] = []
 var in_discrete_mode : bool = false
 
 var _systems_queue : Array[System] = []
+var _first_system : System
 
 
 func _enter_tree():
@@ -106,6 +107,8 @@ func enter_discrete_mode():
 	if in_discrete_mode:
 		return
 	
+	await get_tree().process_frame
+	
 	_fill_system_queue(get_tree().root)
 	
 	for s in _systems_queue:
@@ -113,12 +116,25 @@ func enter_discrete_mode():
 	
 	in_discrete_mode = true
 	
+	if not _systems_queue.is_empty():
+		_first_system = _systems_queue[0]
+	
 	entered_discrete_mode.emit()
 
 
 func exit_discrete_mode():
 	if not in_discrete_mode:
 		return
+	
+	await get_tree().process_frame
+	
+	for s in _systems_queue:
+		if s != _first_system:
+			s.push_process()
+		else:
+			break
+	
+	await get_tree().process_frame
 	
 	for s in _systems_queue:
 		s.exit_discrete_mode()

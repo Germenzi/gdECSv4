@@ -6,7 +6,6 @@ class_name System
 var active : bool = true
 
 
-var registered : bool = false
 var entity_filter : EntityFilter
 var in_discrete_mode : bool = false
 

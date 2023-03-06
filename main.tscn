@@ -1,14 +1,18 @@
 [gd_scene load_steps=3 format=3 uid="uid://cxuo4ujgu0e8w"]
 
-[ext_resource type="PackedScene" uid="uid://dwt2tn5tvr2tr" path="res://ExampleSource/Example.tscn" id="1_wtd67"]
+[ext_resource type="Script" path="res://TracerSystem.gd" id="1_iuba5"]
 
 [sub_resource type="GDScript" id="GDScript_1hqel"]
 resource_name = "main"
 script/source = "extends Node2D
 
 
+var e : Entity
+
 func _ready():
-	pass
+	e = Entity.new([])
+	ECS.entered_discrete_mode.connect(func(): print(\"Entered discrete mode\"))
+	ECS.exited_discrete_mode.connect(func(): print(\"Exited discrete mode\"))
 
 
 func _process(delta):
@@ -18,7 +22,6 @@ func _process(delta):
 		else:
 			ECS.exit_discrete_mode()
 	
-	
 	if Input.is_action_just_pressed(\"ui_down\"):
 		ECS.push_update()
 "
@@ -26,4 +29,23 @@ func _process(delta):
 [node name="main" type="Node2D"]
 script = SubResource("GDScript_1hqel")
 
-[node name="main" parent="." instance=ExtResource("1_wtd67")]
+[node name="Tracer1" type="Node" parent="."]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer2" type="Node" parent="Tracer1"]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer3" type="Node" parent="Tracer1/Tracer2"]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer4" type="Node" parent="Tracer1/Tracer2"]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer5" type="Node" parent="Tracer1"]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer6" type="Node" parent="Tracer1/Tracer5"]
+script = ExtResource("1_iuba5")
+
+[node name="Tracer7" type="Node" parent="."]
+script = ExtResource("1_iuba5")
