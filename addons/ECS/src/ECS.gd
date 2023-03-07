@@ -101,10 +101,12 @@ func push_update():
 
 func complete_systems_cycle():
 	if not in_discrete_mode:
-		return # warning
+		push_warning("Attempted complete systems cycle when discrete mode isn't active")
+		return
 	
 	if not _has_systems_in_queue():
-		return # warning
+		push_warning("Has no systems to complete cycle")
+		return
 	
 	while _systems_queue[0] != _first_system:
 		_process_next_system()
@@ -113,7 +115,8 @@ func complete_systems_cycle():
 
 func enter_discrete_mode():
 	if in_discrete_mode:
-		return # warning
+		push_warning("Attempted to enter discrete mode when it's active")
+		return
 		
 	await get_tree().process_frame
 	
