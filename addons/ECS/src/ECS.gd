@@ -123,7 +123,7 @@ func enter_discrete_mode():
 	_fill_system_queue(get_tree().root)
 	
 	for s in _systems_queue:
-		s.enter_discrete_mode()
+		s.in_discrete_mode = true
 	
 	in_discrete_mode = true
 	
@@ -140,7 +140,7 @@ func exit_discrete_mode():
 		return # warning
 	
 	for s in _systems_queue:
-		s.exit_discrete_mode()
+		s.in_discrete_mode = false
 	
 	_systems_queue = []
 	in_discrete_mode = false
@@ -189,4 +189,3 @@ func _has_systems_in_queue():
 func _on_node_added(node:Node):
 	if node is System and in_discrete_mode:
 		push_warning("Adding new System while discrete mode active")
-
