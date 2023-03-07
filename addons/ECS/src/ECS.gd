@@ -35,7 +35,7 @@ func _enter_tree():
 
 
 ## Allow [code]filter[/code] to get valid registered entities
-func register_filter(filter:EntityFilter):
+func register_filter(filter:EntityFilter) -> void:
 	if filter.registered:
 		return
 	
@@ -50,7 +50,7 @@ func register_filter(filter:EntityFilter):
 
 
 ## [code]filter[/code] stops to get valid entities and clears [code]valid_entities[/code]
-func unregister_filter(filter:EntityFilter):
+func unregister_filter(filter:EntityFilter) -> void:
 	if not filter.registered:
 		return
 	
@@ -62,7 +62,7 @@ func unregister_filter(filter:EntityFilter):
 
 
 ## Allow [code]entity[/code] being passed into registered filters
-func register_entity(entity:Entity):
+func register_entity(entity:Entity) -> void:
 	if entity.inside_ecs:
 		return
 	
@@ -75,7 +75,7 @@ func register_entity(entity:Entity):
 
 
 ## [code]entitity[/code] stops being passed into filters
-func unregister_entity(entity:Entity):
+func unregister_entity(entity:Entity) -> void:
 	if not entity.inside_ecs:
 		return
 	
@@ -90,7 +90,7 @@ func unregister_entity(entity:Entity):
 
 
 ## Frees all regsitered entities
-func clear_entities():
+func clear_entities() -> void:
 	for ent in entities.duplicate():
 		ent.free()
 
@@ -98,7 +98,7 @@ func clear_entities():
 ## Usually called when [code]entity[/code] changed it's components set[br]
 ## Adds [code]entity[/code] into filters it fits[br]
 ## Removes an [code]entity[/code] from filters it doesn't fit, if [code]entity[/code] in it
-func revise_entity(entity:Entity):
+func revise_entity(entity:Entity) -> void:
 	if not entity.inside_ecs:
 		return
 	
@@ -113,7 +113,7 @@ func revise_entity(entity:Entity):
 
 ## Only in discrete mode[br]
 ## Processes next system
-func push_update():
+func push_update() -> void:
 	if not _has_systems_in_queue():
 		push_warning("Has no systems to push update")
 		return
@@ -125,7 +125,7 @@ func push_update():
 
 ## Only in discrete mode[br]
 ## Processes systems before a system which is processed first in one frame in queue
-func complete_systems_cycle():
+func complete_systems_cycle() -> void:
 	if not in_discrete_mode:
 		push_warning("Attempted complete systems cycle when discrete mode isn't active")
 		return
@@ -141,7 +141,7 @@ func complete_systems_cycle():
 
 ## Activates step-by-step system processing[br]
 ## Shows discrete mode control panel
-func enter_discrete_mode():
+func enter_discrete_mode() -> void:
 	if in_discrete_mode:
 		push_warning("Attempted to enter discrete mode when it's active")
 		return
@@ -163,7 +163,7 @@ func enter_discrete_mode():
 
 ## Diactivates step-by-step system processing[br]
 ## Hides discrete mode control panel
-func exit_discrete_mode():
+func exit_discrete_mode() -> void:
 	await get_tree().process_frame
 	
 	if not in_discrete_mode:
@@ -179,12 +179,12 @@ func exit_discrete_mode():
 
 
 ## True if [code]instance[/code] can be interpreted as component
-func is_instance_component(instance:Object):
+func is_instance_component(instance:Object) -> bool:
 	return COMPONENT_TYPE_PROPERTY in instance
 
 
 ## True if [code]instance[/code] can be interpreted as component and was set as readonly
-func is_component_readonly(instance:Object):
+func is_component_readonly(instance:Object) -> bool:
 	if not is_instance_component(instance):
 		return false
 	
@@ -193,14 +193,14 @@ func is_component_readonly(instance:Object):
 
 ## Sets component as readonly[br]
 ## Creates instance's meta with name specified in [code]COMPONENT_READONLY_META_NAME[/code]
-func set_component_readonly(instance:Object):
+func set_component_readonly(instance:Object) -> void:
 	if not is_instance_component(instance):
-		return false
+		return
 	
 	instance.set_meta(COMPONENT_READONLY_META_NAME, 0)
 
 
-func _fill_system_queue(node:Node):
+func _fill_system_queue(node:Node) -> void:
 	if node is System:
 		_systems_queue.append(node)
 	
@@ -208,7 +208,7 @@ func _fill_system_queue(node:Node):
 		_fill_system_queue(i)
 
 
-func _process_next_system():
+func _process_next_system() -> void:
 	var system : System = _systems_queue.pop_front()
 	
 	system.push_process()
@@ -216,10 +216,10 @@ func _process_next_system():
 	_systems_queue.append(system)
 
 
-func _has_systems_in_queue():
+func _has_systems_in_queue() -> bool:
 	return not _systems_queue.is_empty()
 
 
-func _on_node_added(node:Node):
+func _on_node_added(node:Node) -> void:
 	if node is System and in_discrete_mode:
 		push_warning("Adding new System while discrete mode active")
