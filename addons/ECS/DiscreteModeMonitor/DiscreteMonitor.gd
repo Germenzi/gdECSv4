@@ -34,3 +34,7 @@ func _on_process_pushed():
 
 func _on_close_requested():
 	ECS.exit_discrete_mode()
+
+
+func _on_complete_cycle_pressed():
+	ECS.complete_systems_cycle()

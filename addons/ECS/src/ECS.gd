@@ -90,23 +90,31 @@ func revise_entity(entity:Entity):
 
 
 func push_update():
-	if _systems_queue.is_empty():
+	if not _has_systems_in_queue():
 		push_warning("Has no systems to push update")
 		return
 	
-	var system : System = _systems_queue.pop_front()
-	
-	system.push_process()
-	
-	_systems_queue.append(system)
+	_process_next_system()
 	
 	process_pushed.emit()
 
 
+func complete_systems_cycle():
+	if not in_discrete_mode:
+		return # warning
+	
+	if not _has_systems_in_queue():
+		return # warning
+	
+	while _systems_queue[0] != _first_system:
+		_process_next_system()
+		process_pushed.emit()
+
+
 func enter_discrete_mode():
 	if in_discrete_mode:
-		return
-	
+		return # warning
+		
 	await get_tree().process_frame
 	
 	_fill_system_queue(get_tree().root)
@@ -123,18 +131,10 @@ func enter_discrete_mode():
 
 
 func exit_discrete_mode():
+	await get_tree().process_frame
+	
 	if not in_discrete_mode:
-		return
-	
-	await get_tree().process_frame
-	
-	for s in _systems_queue:
-		if s != _first_system:
-			s.push_process()
-		else:
-			break
-	
-	await get_tree().process_frame
+		return # warning
 	
 	for s in _systems_queue:
 		s.exit_discrete_mode()
@@ -171,6 +171,19 @@ func _fill_system_queue(node:Node):
 		_fill_system_queue(i)
 
 
+func _process_next_system():
+	var system : System = _systems_queue.pop_front()
+	
+	system.push_process()
+	
+	_systems_queue.append(system)
+
+
+func _has_systems_in_queue():
+	return not _systems_queue.is_empty()
+
+
 func _on_node_added(node:Node):
 	if node is System and in_discrete_mode:
 		push_warning("Adding new System while discrete mode active")
+

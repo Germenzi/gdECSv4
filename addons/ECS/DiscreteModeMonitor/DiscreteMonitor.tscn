@@ -7,6 +7,11 @@ resource_name = "SystemsDisplay"
 script/source = "extends RichTextLabel
 
 
+const BOLD_LINE = \"[b]{0}[/b]\"
+const POINTER_LINE = \"{0} <--\"
+const COLORED_LINE = \"[color={0}]{1}[/color]\"
+
+
 func update_text():
 	var systems : int = ECS._systems_queue.size()
 	
@@ -15,51 +20,62 @@ func update_text():
 	if systems == 0:
 		text += \"<No systems>\"
 	elif systems == 1:
-		text += ECS._systems_queue[0].name
+		_add_system_text(ECS._systems_queue[0], true)
 	elif systems == 2:
-		text += ECS._systems_queue[1].name + \"\\n\"
-		text += ECS._systems_queue[0].name + \" <-- \\n\"
+		_add_system_text(ECS._systems_queue[1])
+		_add_system_text(ECS._systems_queue[0], true)
 	else:
-		text += ECS._systems_queue[-1].name + \"\\n\"
-		text += ECS._systems_queue[0].name + \" <--\\n\"
-		text += ECS._systems_queue[1].name + \"\\n...\"
+		_add_system_text(ECS._systems_queue[-1])
+		_add_system_text(ECS._systems_queue[0], true)
+		_add_system_text(ECS._systems_queue[1])
+
+
+func _add_system_text(sys:System, curr:bool=false):
+	var res_str : String = sys.name
+	
+	if curr:
+		res_str = BOLD_LINE.format([
+			POINTER_LINE.format([
+				res_str
+			])
+		])
+	
+	if sys == ECS._first_system:
+		res_str = COLORED_LINE.format([\"Yellow\", res_str])
+	
+	res_str += '\\n'
+	
+	text += res_str
 "
 
 [node name="DiscreteMonitor" type="Window"]
 title = "Discrete monitor"
-position = Vector2i(20, 20)
-size = Vector2i(300, 150)
-visible = false
-min_size = Vector2i(300, 150)
+position = Vector2i(50, 70)
+size = Vector2i(300, 200)
+min_size = Vector2i(300, 200)
 script = ExtResource("1_0jpte")
 
 [node name="Base" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Base"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -122.5
-offset_top = -75.0
-offset_right = 122.5
-offset_bottom = 75.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Base/MarginContainer"]
 layout_mode = 2
@@ -67,6 +83,7 @@ layout_mode = 2
 [node name="SystemsList" type="RichTextLabel" parent="Base/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
+bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 script = SubResource("GDScript_1yu8a")
@@ -92,7 +109,14 @@ focus_mode = 0
 text = "Next"
 flat = true
 
-[node name="ExitDiscreteMode" type="Button" parent="Base/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="CompleteCycle" type="Button" parent="Base/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 30)
+layout_mode = 2
+focus_mode = 0
+text = "Complete Cycle"
+flat = true
+
+[node name="ExitDiscreteMode" type="Button" parent="Base/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(70, 30)
 layout_mode = 2
 focus_mode = 0
@@ -101,4 +125,5 @@ flat = true
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]
-[connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/ExitDiscreteMode" to="." method="_on_exit_discrete_mode_pressed"]
+[connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/CompleteCycle" to="." method="_on_complete_cycle_pressed"]
+[connection signal="pressed" from="Base/MarginContainer/VBoxContainer/ExitDiscreteMode" to="." method="_on_exit_discrete_mode_pressed"]

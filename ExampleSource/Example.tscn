@@ -10,6 +10,20 @@ func _ready():
 		var m = MOVING_SCENE.instantiate()
 		
 		add_child(m)
+	
+	ECS.entered_discrete_mode.connect(func(): print(\"Entered discrete mode\"))
+	ECS.exited_discrete_mode.connect(func(): print(\"Exited discrete mode\"))
+
+
+func _process(delta):
+	if Input.is_action_just_pressed(\"ui_select\"):
+		if not ECS.in_discrete_mode:
+			ECS.enter_discrete_mode()
+		else:
+			ECS.exit_discrete_mode()
+	
+	if Input.is_action_just_pressed(\"ui_down\"):
+		ECS.push_update()
 "
 
 [sub_resource type="GDScript" id="GDScript_njyqm"]

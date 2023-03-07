@@ -24,6 +24,9 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed(\"ui_down\"):
 		ECS.push_update()
+	
+	if Input.is_action_just_pressed(\"f\"):
+		ECS.complete_systems_cycle()
 "
 
 [node name="main" type="Node2D"]
