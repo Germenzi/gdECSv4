@@ -18,7 +18,7 @@ func update_text():
 	text = \"\"
 	
 	if systems == 0:
-		text += \"<No systems>\"
+		text += \"[color=Red]<No systems>[/color]\"
 	elif systems == 1:
 		_add_system_text(ECS._systems_queue[0], true)
 	elif systems == 2:
@@ -52,6 +52,7 @@ func _add_system_text(sys:System, curr:bool=false):
 title = "Discrete monitor"
 position = Vector2i(50, 70)
 size = Vector2i(300, 200)
+visible = false
 min_size = Vector2i(300, 200)
 script = ExtResource("1_0jpte")
 
@@ -123,7 +124,28 @@ focus_mode = 0
 text = "Exit Dicscrete mode"
 flat = true
 
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+title = "Warning"
+size = Vector2i(500, 109)
+min_size = Vector2i(500, 100)
+
+[node name="Label" type="Label" parent="ConfirmationDialog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Are you sure to exit without completing systems' cycle?
+This action can break the systems' queue"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/Next" to="." method="_on_next_pressed"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/HBoxContainer/CompleteCycle" to="." method="_on_complete_cycle_pressed"]
 [connection signal="pressed" from="Base/MarginContainer/VBoxContainer/ExitDiscreteMode" to="." method="_on_exit_discrete_mode_pressed"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_confirmation_dialog_confirmed"]

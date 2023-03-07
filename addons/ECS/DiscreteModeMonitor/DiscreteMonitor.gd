@@ -25,7 +25,7 @@ func _on_next_pressed():
 
 
 func _on_exit_discrete_mode_pressed():
-	ECS.exit_discrete_mode()
+	_exit_discr_mode()
 
 
 func _on_process_pushed():
@@ -33,8 +33,23 @@ func _on_process_pushed():
 
 
 func _on_close_requested():
-	ECS.exit_discrete_mode()
+	_exit_discr_mode()
 
 
 func _on_complete_cycle_pressed():
 	ECS.complete_systems_cycle()
+
+
+func _exit_discr_mode():
+	if ECS._systems_queue.is_empty():
+		return
+	
+	if ECS._systems_queue[0] != ECS._first_system:
+		$ConfirmationDialog.position = position
+		$ConfirmationDialog.show()
+	else:
+		ECS.exit_discrete_mode()
+
+
+func _on_confirmation_dialog_confirmed():
+	ECS.exit_discrete_mode()
