@@ -5,9 +5,8 @@ class_name System
 @export
 var active : bool = true:
 	set(v):
-		set_process(v)
-	get:
-		return can_process()
+		active = v
+		set_process(active)
 
 
 var entity_filter : EntityFilter
@@ -24,13 +23,15 @@ func _enter_tree():
 		)
 	)
 	
-	set_process(active)
-	
 	ECS.register_filter(entity_filter)
 
 
 func _exit_tree():
 	ECS.unregister_filter(entity_filter)
+
+
+func _ready():
+	set_process(active)
 
 
 func _process(delta:float):
