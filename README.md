@@ -8,6 +8,8 @@ This addon fully written in GDScript, so don't count on high performance. Main t
 
 ![gif-ecs](https://user-images.githubusercontent.com/66486400/197368212-0811de8e-4923-4178-b2ab-919b9691f03d.gif)
 
+Looking ECS addon for godot v3? It's right [here](https://github.com/Germenzi/gdECS)
+
 ## :large_orange_diamond: Key features
 - any `Object` can be a component
 - readonly components
