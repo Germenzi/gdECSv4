@@ -39,14 +39,16 @@ Readonly status sets by `ECS.set_component_readonly(component:Object)` autoload 
 Godot implements Object type feature, so you can specify flag-components without creating an instance:
 ```gdscript
 class FlagComponent:
-  extends RefCounted
+    extends RefCounted
   
-  const COMPONENT_TYPE = "FlagComponent"
+    const COMPONENT_TYPE = "FlagComponent"
 
 ...
 
 entity.add_component(FlagComponent)
 ```
+
+Keep in mind that if you will specify `readonly` as `true`, `FlagComponent` will be setted as readonly everywhere, including other entities to which it was passed as non-readonly.
 
 ## :large_orange_diamond: ECS autoload
 
@@ -94,12 +96,14 @@ ECS.enter_discrete_mode()
 When discrete mode active you can see control panel.
 
 Here are shown three (if has so) systems:
-Last processed
-Current to be processed
-Next system
+- Last processed
+- Current to be processed
+- Next system
 
 Yellow system is the first system to be proceed in regular frame.
 System, on which pointers arrow, is the system to be processed next.
+
+There are three buttons on the panel:
 
 - _next_ - processes system, on which pointers arrow
 - _Exit discrete mode_ - diactivates discrete mode. If you didn't complete systems' cycle, an warning will be shown.
@@ -168,16 +172,16 @@ entity.free() # it will automatically do needed things
 `EntitySignature` is a static class for checking entity for having and not specified components. Just create dictionary as in example below:
 
 ```gdscript
-var signature = {
+var signature : Dictionary = {
 	EntitySignature.NECESSARY_STRING : ["C_MyComponent"],
 	EntitySignature.BANNED_STRING : ["C_NotThat"]
 }
 ```
 
-or using `EntitySignature.create_signature(necessary:Array, banned:Array=[])`:
+or
 
 ```gdscript
-var signature = EntitySignature.create_signature(["C_MyComponent"],  ["C_NotThat"])
+var signature : Dictionary = EntitySignature.create_signature(["C_MyComponent"],  ["C_NotThat"])
 ```
 
 Where `EntitySignature.NECESSARY_STRING` and `EntitySignature.BANNED_STRING` by default is `"NECESSARY_COMPONENTS"` and `"BANNED_COMPONENTS"` accordingly.
@@ -188,11 +192,11 @@ Then check does entity match specified component set:
 EntitySignature.match_entity(signature:Dictionary, entity:Entity)
 ```
 
-If the signature has no necessary and banned, it will return `true`.
+If the signature has no necessary and banned, it will return `true`. Empty `Entity` (without components) will fit any filter.
 
 ## :large_orange_diamond: Entity filter
 
-Class, instance of which can be registered in ECS autoload (see 'ECS autoload' section) and get valid entities from it. Just specify necessary and, optionally, banned components typenames:
+Class, instance of which can be registered in ECS autoload (see 'ECS autoload' section) and get valid entities from it. Just specify signature when instancing:
 ```gdscript
 var entity_filter : EntityFilter = EntityFilter.new(signature:Dictionary) # specify valid components set
 ```
@@ -207,7 +211,7 @@ After it valid entities will automatically be added to `valid_entites` array:
 entity_filter.valid_entites # keeps all valid entities
 ```
 
-Also you can register filter, after it its valid_entities will be cleaned and wouldn't be touched by ECS until re-registration:
+Also you can unregister filter, after it its `valid_entities` will be cleaned and wouldn't be touched by ECS until re-registration:
 ```gdscript
 ECS.unregister_filter(filter:EntityFilter)
 ```
