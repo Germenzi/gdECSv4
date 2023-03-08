@@ -3,7 +3,7 @@ extends RefCounted
 class_name EntityFilter
 
 
-## Class used to filter entities with valid signature.
+## Class used to filter entities with valid signature.[br]
 ## All filtered entities goes to [code]valid_entities[/code]
 
 ## Emmited after new entity was added to [code]valid_entities[/code]
@@ -19,7 +19,7 @@ signal pre_unregister
 ## Array of all entities, which signature matches filter's signature[br]
 ## Usually there is no reason to change it manually
 var valid_entities : Array[Entity] = [] 
-## If true, the filter is registered in [code]ECS[/code]
+## If true, the filter is registered in [code]ECS[/code].[br]
 ## Usually there is no reason to change it manually
 var registered : bool = false
 ## Signature for filtering valid entities
