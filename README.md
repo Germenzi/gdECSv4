@@ -6,7 +6,8 @@ This addon fully written in GDScript, so don't count on high performance. Main t
 
 :exclamation: code snippets like `some_class.function(param:int=0)` doesn't fit GDScript syntax and represents only for methods signature demonstration
 
-![gif-ecs](https://user-images.githubusercontent.com/66486400/197368212-0811de8e-4923-4178-b2ab-919b9691f03d.gif)
+![gif-ecs](https://user-images.githubusercontent.com/66486400/224495326-243b238c-f962-480e-84e4-34b77ce39f5a.gif)
+
 
 Looking ECS addon for godot v3? It's right [here](https://github.com/Germenzi/gdECS)
 
