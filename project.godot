@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="gdECSv4"
-run/main_scene="res://main.tscn"
+run/main_scene="res://ECSexample/TracingScene.tscn"
 config/features=PackedStringArray("4.0", "GL Compatibility")
 config/icon="res://addons/ECS/ecs-icon.png"
 
@@ -27,6 +27,7 @@ file_logging/enable_file_logging=true
 [display]
 
 window/size/always_on_top=true
+window/subwindows/embed_subwindows=false
 
 [input]
 

@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cxuo4ujgu0e8w"]
+[gd_scene load_steps=3 format=3 uid="uid://bpxvln2by7oqt"]
 
-[ext_resource type="Script" path="res://TracerSystem.gd" id="1_iuba5"]
+[ext_resource type="Script" path="res://ECSexample/TracerSystem.gd" id="1_bn1fa"]
 
 [sub_resource type="GDScript" id="GDScript_1hqel"]
 resource_name = "main"
@@ -29,26 +29,26 @@ func _process(delta):
 		ECS.complete_systems_cycle()
 "
 
-[node name="main" type="Node2D"]
+[node name="Tracing" type="Node2D"]
 script = SubResource("GDScript_1hqel")
 
 [node name="Tracer1" type="Node" parent="."]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer2" type="Node" parent="Tracer1"]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer3" type="Node" parent="Tracer1/Tracer2"]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer4" type="Node" parent="Tracer1/Tracer2"]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer5" type="Node" parent="Tracer1"]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer6" type="Node" parent="Tracer1/Tracer5"]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")
 
 [node name="Tracer7" type="Node" parent="."]
-script = ExtResource("1_iuba5")
+script = ExtResource("1_bn1fa")

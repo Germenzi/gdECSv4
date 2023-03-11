@@ -61,6 +61,7 @@ func unregister_filter(filter:EntityFilter) -> void:
 	filter.registered = false
 
 
+
 ## Allow [code]entity[/code] being passed into registered filters
 func register_entity(entity:Entity) -> void:
 	if entity.inside_ecs:

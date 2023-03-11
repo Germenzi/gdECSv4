@@ -3,7 +3,7 @@
 [sub_resource type="GDScript" id="GDScript_q4xnb"]
 script/source = "extends Node2D
 
-const MOVING_SCENE = preload(\"res://ExampleSource/Moving.tscn\")
+const MOVING_SCENE = preload(\"res://ECSexample/Unit.tscn\")
 
 func _ready():
 	for i in range(100):
@@ -60,7 +60,7 @@ func get_necessary_components() -> Array:
 	]
 "
 
-[node name="main" type="Node2D"]
+[node name="LinearMoving" type="Node2D"]
 script = SubResource("GDScript_q4xnb")
 
 [node name="LinearMoveSystem" type="Node" parent="."]
