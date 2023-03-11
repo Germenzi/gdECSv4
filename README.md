@@ -196,6 +196,18 @@ EntitySignature.match_entity(signature:Dictionary, entity:Entity)
 
 If the signature has no necessary and banned, it will return `true`. Empty `Entity` (without components) will fit any filter.
 
+The reason why dictionaries were used is the possibility to write them into a `const` expression:
+```gdscript
+const SIGNATURE = {
+	EntitySignature.NECESSARY_STRING : [
+		"C_NecessaryComponent1"
+	],
+	EntitySignature.BANNED_STRING : [
+		"C_BannedComponent1"
+	]
+}
+```
+
 ## :large_orange_diamond: Entity filter
 
 Class, instance of which can be registered in ECS autoload (see 'ECS autoload' section) and get valid entities from it. Just specify signature when instancing:
