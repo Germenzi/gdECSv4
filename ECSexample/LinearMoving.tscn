@@ -5,6 +5,7 @@ script/source = "extends Node2D
 
 const MOVING_SCENE = preload(\"res://ECSexample/Unit.tscn\")
 
+
 func _ready():
 	for i in range(100):
 		var m = MOVING_SCENE.instantiate()
