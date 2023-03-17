@@ -19,7 +19,7 @@ var _components : Dictionary = {} # component type : component instance
 var _binded_scene : Node
 
 
-## True if [code]entity[/code] valid [Entity]
+## True if [code]entity[/code] invalid instance [Entity]
 static func is_dirty(entity:Entity) -> bool:
 	return entity == null or \
 			not is_instance_valid(entity)
